@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AniNow - 最速放送アニメ一覧",
-  description: "今期放送中のTVアニメを「最速放送時間」基準で一覧表示するサイト",
+  title: "AniNow - 今期アニメ一覧",
+  description: "今やっているアニメをチェックしよう！",
 };
 
 export default function RootLayout({

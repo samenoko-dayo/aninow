@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run fetch-data && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

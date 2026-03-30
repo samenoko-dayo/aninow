@@ -44,7 +44,7 @@ export default async function Home() {
             </div>
           </div>
           <p className="max-w-xl text-lg text-slate-600 font-medium break-keep">
-            今期のアニメをまとめてチェック！<wbr />放送中のアニメを逃さない！
+            今やっているアニメをチェックしよう！
           </p>
           {updatedAt && (
             <div className="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 uppercase tracking-wider">
