@@ -43,8 +43,8 @@ export default async function Home() {
               {season}
             </div>
           </div>
-          <p className="max-w-xl text-lg text-slate-600 font-medium">
-            今期のアニメをまとめてチェック！放送中のアニメを逃さない！
+          <p className="max-w-xl text-lg text-slate-600 font-medium break-keep">
+            今期のアニメをまとめてチェック！<wbr />放送中のアニメを逃さない！
           </p>
           {updatedAt && (
             <div className="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 uppercase tracking-wider">

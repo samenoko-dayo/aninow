@@ -41,14 +41,14 @@ export default function AnimeGrid({ animeList }: { animeList: AnimeWork[] }) {
   return (
     <div className="pb-20">
       {/* Tab Navigation */}
-      <div className="sticky top-4 z-30 mb-12 flex flex-wrap items-center justify-center gap-2 rounded-2xl border-2 border-slate-200 bg-white/90 p-2 shadow-sm backdrop-blur-md">
+      <div className="sticky top-4 z-30 mb-12 grid grid-flow-col auto-cols-[minmax(80px,1fr)] gap-2 rounded-2xl border-2 border-slate-200 bg-white/90 p-2 shadow-sm backdrop-blur-md overflow-x-auto no-scrollbar">
         {days.map((day) => (
           <button
             key={day.value}
             onClick={() => setActiveDay(day.value)}
-            className={`flex-1 min-w-20 rounded-xl px-4 py-3 text-sm font-black transition-all duration-200 border-2 cursor-pointer
-              ${activeDay === day.value 
-                ? "bg-indigo-600 border-indigo-700 text-white shadow-lg shadow-indigo-600/20" 
+            className={`rounded-xl px-4 py-3 text-sm font-black transition-all duration-200 border-2 cursor-pointer
+        ${activeDay === day.value
+                ? "bg-indigo-600 border-indigo-700 text-white shadow-lg shadow-indigo-600/20"
                 : "bg-slate-50 border-transparent text-slate-500 hover:bg-white hover:border-slate-200 hover:text-indigo-600"
               }`}
           >
@@ -70,7 +70,7 @@ export default function AnimeGrid({ animeList }: { animeList: AnimeWork[] }) {
             ({filteredAnime.length}作品)
           </span>
         </div>
-        
+
         {filteredAnime.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredAnime.map((anime) => (
