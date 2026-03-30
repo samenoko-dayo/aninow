@@ -66,6 +66,19 @@ export default async function Home() {
           </div>
         )}
 
+        <footer className="py-8 text-slate-500">
+          <div className='flex flex-col items-center justify-center gap-2'>
+            <div className='flex items-center gap-2'>
+              <Tv size={24} className="text-indigo-600" />
+              <p className='text-lg font-bold'>AniNow</p>
+            </div>
+            <div className='flex flex-row items-center gap-2 text-white font-bold'>
+              <a className='px-4 py-2 bg-indigo-600 rounded-xl' href="https://github.com/samenoko-dayo/aninow" target='_blank'>Source</a>
+              <a className='px-4 py-2 bg-indigo-600 rounded-xl' href="https://annict.com" target='_blank'>Annict</a>
+            </div>
+          </div>
+
+        </footer>
       </div>
     </main>
   );
