@@ -1,0 +1,39 @@
+name: Deploy AniNow
+on:
+  schedule:
+    - cron: '0 15 * * *' # Midnight JST (15:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Tokyo
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Wrangler CLI
+        run: npm install -g wrangler@latest
+
+      - name: Set Environment Variables & Build
+        env:
+          ANNICT_ACCESS_TOKEN: ${{ secrets.ANNICT_ACCESS_TOKEN }}
+        run: |
+          npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name aninow --branch main
