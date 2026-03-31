@@ -22,7 +22,7 @@ export default function AnimeCard({ anime, active = false }: { anime: AnimeWork;
     <div className={`group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border-2 ${active ? 'border-red-500 shadow-red-500/10' : 'border-slate-200 hover:border-indigo-400'}`}>
 
       {/* Thumbnail */}
-      <div className="relative aspect-video w-full overflow-hidden bg-slate-100 border-b-2 border-slate-100">
+      <div className="relative aspect-9/16 w-full overflow-hidden bg-slate-100 border-b-2 border-slate-100">
         {anime.thumbnail_url ? (
           <Image
             src={anime.thumbnail_url}

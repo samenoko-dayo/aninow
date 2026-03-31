@@ -75,6 +75,7 @@ export default async function Home() {
             <div className='flex flex-row items-center gap-2 text-white font-bold'>
               <a className='px-4 py-2 bg-indigo-600 rounded-xl' href="https://github.com/samenoko-dayo/aninow" target='_blank'>Source</a>
               <a className='px-4 py-2 bg-indigo-600 rounded-xl' href="https://annict.com" target='_blank'>Annict</a>
+              <a className='px-4 py-2 bg-indigo-600 rounded-xl' href="/about">About</a>
             </div>
           </div>
 
