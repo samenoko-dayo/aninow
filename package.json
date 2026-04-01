@@ -3,30 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "astro dev",
+    "build": "astro build",
     "lint": "eslint",
     "fetch-data": "node scripts/fetch-anime.mjs",
-    "prebuild": "npm run fetch-data"
+    "prebuild": "npm run fetch-data",
+    "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.2",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/noto-sans-jp": "^5.2.10",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.2",
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
     "lucide-react": "^1.7.0",
     "next": "16.2.1",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.2.2",
     "typescript": "^5"
   }
 }

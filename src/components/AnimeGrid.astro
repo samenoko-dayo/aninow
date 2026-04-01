@@ -1,0 +1,142 @@
+---
+import AnimeCard from "./AnimeCard.astro";
+import type { AnimeWork } from "./AnimeCard.astro";
+import { CalendarDays } from "lucide-react";
+
+interface Props {
+  animeList: AnimeWork[];
+}
+
+const { animeList } = Astro.props;
+
+const days = [
+  { label: "月曜日", value: 1 },
+  { label: "火曜日", value: 2 },
+  { label: "水曜日", value: 3 },
+  { label: "木曜日", value: 4 },
+  { label: "金曜日", value: 5 },
+  { label: "土曜日", value: 6 },
+  { label: "日曜日", value: 0 },
+];
+---
+
+<div class="pb-20" id="anime-grid-container">
+  {/* Tab Navigation */}
+  <div class="sticky top-4 z-30 mb-12 grid grid-flow-col auto-cols-[minmax(80px,1fr)] gap-2 rounded-2xl border-2 border-slate-200 bg-white/90 p-2 shadow-sm backdrop-blur-md overflow-x-auto no-scrollbar">
+    {days.map((day) => (
+      <button
+        data-day={day.value}
+        class="day-tab rounded-xl px-4 py-3 text-sm font-black transition-all duration-200 border-2 cursor-pointer bg-slate-50 border-transparent text-slate-500 hover:bg-white hover:border-slate-200 hover:text-indigo-600"
+      >
+        {day.label.charAt(0)}
+      </button>
+    ))}
+  </div>
+
+  {/* Active Day Section */}
+  <section class="w-full animate-in fade-in slide-in-from-bottom-5 duration-500">
+    <div class="mb-8 flex items-center gap-3 border-b-2 border-slate-200 pb-4">
+      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 border-2 border-indigo-200 text-indigo-600">
+        <CalendarDays size={20} />
+      </div>
+      <h2 id="active-day-label" class="text-3xl font-black tracking-tight text-slate-900">
+        読み込み中...
+      </h2>
+      <span id="anime-count" class="ml-2 text-sm font-bold text-slate-400">
+      </span>
+    </div>
+
+    <div id="anime-list-container" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {/* AnimeCards will be shown/hidden by JS */}
+        {animeList.map((anime) => (
+            <div class="anime-card-wrapper hidden" data-day={anime.day_of_week} data-time={new Date(anime.fastest_broadcast).getTime()}>
+                <AnimeCard anime={anime} />
+            </div>
+        ))}
+    </div>
+
+    <div id="no-anime-message" class="hidden flex flex-col items-center justify-center py-20 text-center text-slate-400 border-2 border-dashed border-slate-200 rounded-3xl">
+      <CalendarDays size={48} className="mb-4 opacity-20" />
+      <p class="text-xl font-medium">この曜日の放送予定はありません。</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const days = [
+    { label: "月曜日", value: 1 },
+    { label: "火曜日", value: 2 },
+    { label: "水曜日", value: 3 },
+    { label: "木曜日", value: 4 },
+    { label: "金曜日", value: 5 },
+    { label: "土曜日", value: 6 },
+    { label: "日曜日", value: 0 },
+  ];
+
+  function updateGrid(activeDay: number) {
+    const tabs = document.querySelectorAll('.day-tab');
+    const cards = document.querySelectorAll('.anime-card-wrapper');
+    const label = document.getElementById('active-day-label');
+    const count = document.getElementById('anime-count');
+    const noAnime = document.getElementById('no-anime-message');
+    const listContainer = document.getElementById('anime-list-container');
+
+    // Update tabs
+    tabs.forEach(tab => {
+        const dayValue = parseInt(tab.getAttribute('data-day') || '0');
+        if (dayValue === activeDay) {
+            tab.classList.remove('bg-slate-50', 'border-transparent', 'text-slate-500');
+            tab.classList.add('bg-indigo-600', 'border-indigo-700', 'text-white', 'shadow-lg', 'shadow-indigo-600/20');
+        } else {
+            tab.classList.add('bg-slate-50', 'border-transparent', 'text-slate-500');
+            tab.classList.remove('bg-indigo-600', 'border-indigo-700', 'text-white', 'shadow-lg', 'shadow-indigo-600/20');
+        }
+    });
+
+    // Update label
+    const dayLabel = days.find(d => d.value === activeDay)?.label || "";
+    if (label) label.textContent = dayLabel;
+
+    // Filter cards
+    let visibleCount = 0;
+    const sortedCards = Array.from(cards).sort((a, b) => {
+        return parseInt(a.getAttribute('data-time') || '0') - parseInt(b.getAttribute('data-time') || '0');
+    });
+
+    // We need to re-append them to container to maintain sort order if needed, 
+    // but they are already sorted by fastest_broadcast in the map if we were careful.
+    // Actually, Next.js sorted them in render.
+    
+    cards.forEach(card => {
+        const cardDay = parseInt(card.getAttribute('data-day') || '-1');
+        if (cardDay === activeDay) {
+            card.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+
+    if (count) count.textContent = `(${visibleCount}作品)`;
+    
+    if (visibleCount === 0) {
+        noAnime?.classList.remove('hidden');
+        listContainer?.classList.add('hidden');
+    } else {
+        noAnime?.classList.add('hidden');
+        listContainer?.classList.remove('hidden');
+    }
+  }
+
+  // Initialize
+  const today = new Date().getDay();
+  updateGrid(today);
+
+  // Add click listeners
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const day = parseInt(tab.getAttribute('data-day') || '0');
+        updateGrid(day);
+    });
+  });
+</script>

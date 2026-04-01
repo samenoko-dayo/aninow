@@ -11,8 +11,7 @@
 
 ## Stack
 
-- Next.js v16
-- React v16
+- Astro
 - Cloudflare Pages
 
 ## 情報の更新

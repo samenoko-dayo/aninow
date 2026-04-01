@@ -1,0 +1,73 @@
+---
+import { Radio } from "lucide-react";
+import AnimeCard from "./AnimeCard.astro";
+import type { AnimeWork } from "./AnimeCard.astro";
+
+interface Props {
+  animeList: AnimeWork[];
+}
+
+const { animeList } = Astro.props;
+---
+
+<section id="now-on-air-section" class="hidden mb-16 w-full animate-in fade-in slide-in-from-bottom-5 duration-700">
+  <div class="mb-6 flex items-center gap-3">
+    <div class="relative flex h-10 w-10 items-center justify-center rounded-xl bg-red-100 border-2 border-red-200">
+      <div class="absolute inline-flex h-2 w-2 top-2 right-2 animate-ping rounded-full bg-red-500 opacity-75"></div>
+      <Radio className="relative z-10 text-red-600" size={20} />
+    </div>
+    <h2 class="text-2xl font-black uppercase tracking-widest text-red-600">
+      現在放送中
+    </h2>
+  </div>
+  <div id="now-on-air-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {/* We render ALL cards here but hide/show them via script to keep it simple and avoid client-side templating */}
+    {animeList.map((anime) => (
+      <div class="now-on-air-card-wrapper hidden" 
+           data-start={anime.fastest_broadcast} 
+           data-id={anime.id}>
+        <AnimeCard anime={anime} active={true} />
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { isBefore, addMinutes, parseISO } from "date-fns";
+
+  function checkNowOnAir() {
+    const now = new Date();
+    const section = document.getElementById('now-on-air-section');
+    const cards = document.querySelectorAll('.now-on-air-card-wrapper');
+    
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const startTimeStr = card.getAttribute('data-start');
+      if (!startTimeStr) return;
+      
+      const broadcastTime = parseISO(startTimeStr);
+      const endTime = addMinutes(broadcastTime, 30);
+      
+      const isOnAir = (isBefore(broadcastTime, now) || broadcastTime.getTime() === now.getTime()) && isBefore(now, endTime);
+      
+      if (isOnAir) {
+        card.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    if (visibleCount > 0) {
+      section?.classList.remove('hidden');
+    } else {
+      section?.classList.add('hidden');
+    }
+  }
+
+  // Check immediately
+  checkNowOnAir();
+  // Then every minute
+  setInterval(checkNowOnAir, 60 * 1000);
+</script>
